@@ -4,14 +4,10 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Hi, my name is...
+Hey there, I'm Filip Franik, a seasoned full-stack software developer ready to take on any coding challenge!
 
-## Filip Franik
+Being a senior full-stack developer requires a diverse set of skills. It's not just about coding the back-end and front-end; it's about mastering the art of user experience and interface design, delving into database administration, and even delving into the intricacies of development and operations. And let's not forget the essential soft skills needed to effectively communicate with clients.
 
-...and I'm a senior full-stack software developer.
+In this rapidly evolving field, staying on top of all these areas is a constant learning process. As senior developers, we strive to absorb new knowledge every single day. That's why I created this website—to consolidate my learnings and make them accessible to others. I believe that sharing my professional journey can help fellow coders dive deeper into the world of development and save precious time.
 
-It's hard to state how many skills are required to be an actual senior full-stack developer. You have to be productive in every aspect of creating a website. This includes not only knowing how to code back-end and front-end, but also designing parts of user experience and designing user interfaces, you also have to know a lot about database administration, and getting into development and operations. I'm not even mentioning the soft skills that are required while talking to customers.
-
-All of those areas of expertise are improved daily by hundreds of professionals all over the world. This pretty much forces senior developers learn something new every day. What is more my learning has to be focused and on point. That's why I made this website. To keep everything I learned in one place and available to the public, because I think that story of my professional life can help others to get into coding a little deeper, and save someone else some time.
-
-Let's get to work!
+So, without further ado, let's dive in and get to work! Together, we'll conquer new horizons in the coding universe!
