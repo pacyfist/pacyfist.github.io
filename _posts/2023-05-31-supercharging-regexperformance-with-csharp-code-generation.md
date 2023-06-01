@@ -1,6 +1,6 @@
 ---
-tags: ["csharp", "regex", "code generators"]
-categories: ["csharp"]
+tags: ['csharp', 'regex', 'code generators']
+categories: ['csharp']
 title: "Supercharging Regex Performance with C# Code Generation"
 ---
 

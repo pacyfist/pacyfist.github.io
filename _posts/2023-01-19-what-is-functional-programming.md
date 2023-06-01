@@ -1,6 +1,6 @@
 ---
-tags: ["paradigms", "functional-programming", "csharp"]
-categories: ["programming", "paradigms"]
+tags: ['paradigms', 'functional programming', 'csharp']
+categories: ['programming', 'paradigms']
 title: "What is functional programming?"
 ---
 
