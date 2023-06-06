@@ -1,6 +1,6 @@
 ---
-tags: ['csharp', 'entity framework']
-categories: ['csharp']
+tags: ["csharp", "entity framework"]
+categories: ["csharp", "entity framework"]
 title: "Entity Framework 7: Bulk Updates and Deletes Made Easy!"
 ---
 
