@@ -1,6 +1,6 @@
 ---
-tags: ['paradigms', 'functional programming', 'csharp']
-categories: ['programming', 'paradigms']
+tags: ["paradigms", "functional programming", "csharp"]
+categories: ["programming", "paradigms"]
 title: "What is functional programming?"
 ---
 
@@ -8,9 +8,9 @@ This is a very good question. Do you know? Because I don't. A lot of people say 
 
 ChatGPT says it's:
 
->Functional programming is a programming paradigm that emphasizes the use of functions to solve problems. It is based on mathematical functions and is characterized by a focus on immutability, pure functions, and the use of higher-order functions. In functional programming, functions are first-class citizens, meaning they can be used as values and passed as arguments to other functions. The paradigm stresses on immutability, meaning that once a value is set, it cannot be changed, this makes it easier to reason about the code and eliminates the need for complex state management. Additionally, functional programming makes heavy use of higher-order functions, which are functions that take one or more functions as arguments and/or return a function as output. This allows for the creation of composable and reusable code. This paradigm is commonly used in functional languages such as Haskell, Lisp, and Scala but also can be found in modern JavaScript frameworks.
+> Functional programming is a programming paradigm that emphasizes the use of functions to solve problems. It is based on mathematical functions and is characterized by a focus on immutability, pure functions, and the use of higher-order functions. In functional programming, functions are first-class citizens, meaning they can be used as values and passed as arguments to other functions. The paradigm stresses on immutability, meaning that once a value is set, it cannot be changed, this makes it easier to reason about the code and eliminates the need for complex state management. Additionally, functional programming makes heavy use of higher-order functions, which are functions that take one or more functions as arguments and/or return a function as output. This allows for the creation of composable and reusable code. This paradigm is commonly used in functional languages such as Haskell, Lisp, and Scala but also can be found in modern JavaScript frameworks.
 
-And that makes it completely clear right? It's not like after reading this I understand it even less. What does that even mean to be a *first-class citizen*? While learning other stuff about C# I heard tutors throw "functional programming" here and there while talking about some things that seem like they fit the definition, but I feel that they don't
+And that makes it completely clear right? It's not like after reading this I understand it even less. What does that even mean to be a _first-class citizen_? While learning other stuff about C# I heard tutors throw "functional programming" here and there while talking about some things that seem like they fit the definition, but I feel that they don't
 
 ## Is writing pure functions functional programming?
 
@@ -71,17 +71,17 @@ That definitely looks like it could be it, but the smell of that code prevents m
 
 I asked ChatGPT one more time, and I got a pretty good answer:
 
->Functional programming in C# is a programming paradigm that emphasizes the use of functions to solve problems, and it's based on the principles of functional programming, but adapted to the C# language. C# has been evolving over the years to include more functional programming features such as lambda expressions, Linq and more.
+> Functional programming in C# is a programming paradigm that emphasizes the use of functions to solve problems, and it's based on the principles of functional programming, but adapted to the C# language. C# has been evolving over the years to include more functional programming features such as lambda expressions, Linq and more.
 >
->Functional programming in C# is characterized by:
+> Functional programming in C# is characterized by:
 >
->- The use of immutable data, this means that once a variable is set, it cannot be changed
->- The use of pure functions, functions that have no side effects and always return the same output for a given input
->- The use of higher-order functions, functions that take one or more functions as arguments and/or return a function as output
->- The use of recursion, instead of using loops or iterative statements
->- The use of lambda expressions, anonymous functions that can be passed as arguments to other functions
->- The use of Linq, a set of extension methods that enable querying and manipulating collections of data in a functional way
+> - The use of immutable data, this means that once a variable is set, it cannot be changed
+> - The use of pure functions, functions that have no side effects and always return the same output for a given input
+> - The use of higher-order functions, functions that take one or more functions as arguments and/or return a function as output
+> - The use of recursion, instead of using loops or iterative statements
+> - The use of lambda expressions, anonymous functions that can be passed as arguments to other functions
+> - The use of Linq, a set of extension methods that enable querying and manipulating collections of data in a functional way
 >
->Functional programming in C# allows developers to write more expressive, composable, and testable code. It's not a replacement for the object-oriented paradigm, but it's a way to use some of the functional programming concepts and techniques to improve the code quality.
+> Functional programming in C# allows developers to write more expressive, composable, and testable code. It's not a replacement for the object-oriented paradigm, but it's a way to use some of the functional programming concepts and techniques to improve the code quality.
 
 There is no **real** functional programming in C#. I guess that's what F# is for. But the spirit of functional programming is there, and it can help to write cleaner, and easily testable code. I know that learning all this made me think about changing the way I code.
