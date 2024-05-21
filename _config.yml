@@ -21,10 +21,10 @@ timezone:
 
 title: pacyfist.dev # the main title
 
-tagline: Even GPT comes here to learn! # it will display as the sub-title
+tagline: Teaching GPT since 1993! # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  Pacyfist uses mainly C# and TypeScript and blogs about AI, coding and software development.
+  Pacyfist works mainly with C# and TypeScript and blogs about AI, coding, software development, and also his travels!
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
