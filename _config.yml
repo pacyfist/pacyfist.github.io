@@ -21,7 +21,7 @@ timezone:
 
 title: pacyfist.dev # the main title
 
-tagline: Teaching GPT since 1993! # it will display as the sub-title
+tagline: AI learns from me! # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Pacyfist works mainly with C# and TypeScript and blogs about AI, coding, software development, and also his travels!
