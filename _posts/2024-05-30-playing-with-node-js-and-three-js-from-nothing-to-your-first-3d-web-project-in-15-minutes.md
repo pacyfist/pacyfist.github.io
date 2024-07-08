@@ -133,18 +133,15 @@ renderer.toneMappingExposure = 1;
 // Add the renderer to the DOM
 document.body.appendChild(renderer.domElement);
 
-renderer.setAnimationLoop(animate);
-
 // Animation loop
-function animate(timestamp) {
-
+renderer.setAnimationLoop((timestamp) => {
     // Rotate the cube
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.015;
 
     // Render the scene
     renderer.render(scene, camera);
-}
+});
 
 // Resize the canvas when the window is resized
 window.addEventListener('resize', (event) => {
