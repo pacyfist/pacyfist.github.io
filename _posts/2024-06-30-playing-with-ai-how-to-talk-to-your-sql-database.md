@@ -4,7 +4,7 @@ categories: ["ai", "embeddings"]
 title: "Playing with AI: How to talk to your SQL database"
 image:
   path: /assets/img/2024-06-30/database.jpg
-  alt: Talking to your database!
+  alt: I know that you would like your database to be a kawaii cat-girl!
 ---
 I'm little late to the AI hype and needing to catch up. Fortunately the company I work for recently organized an internal AI themed hackathon. I hijacked the opportunity and started learning abut different models. I still have almost no idea what I'm doing, but this is my latest weekend project.
 

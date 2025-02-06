@@ -4,7 +4,7 @@ categories: ["javascript", "three.js"]
 title: "Playing with Node.js and Three.js: From Nothing to Your First 3D Web Project in 15 Minutes"
 image:
   path: /assets/img/2024-05-30/cube.png
-  alt: It's super easy to add 3D Object onto your website!
+  alt: It's super easy to add 3D object onto your website!
 ---
 During my university days, I became fascinated with 3D graphics, a challenging field at the time due to its complex mathematics and scarce literature on the subject. Unfortunately insanely expensive software accessible only through the university successfully stood in my way of mastering that field. Today, however, creating 3D objects has become remarkably accessible, with the ability to render anything in a browser spending under 15 minutes.
 

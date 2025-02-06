@@ -2,10 +2,10 @@
 tags: ["csharp", "generators", "rant"]
 categories: ["csharp", "generators"]
 title: "Reducing Boilerplate in Microservices with C# Code Generation"
+image:
+  path: /assets/img/2024-11-12/code-generation.jpg
+  alt: This is exactly how we generate code!
 ---
-
-
-## TL;DR
 
 As microservices architectures grow, so does the challenge of managing repetitive code across multiple services. While traditional solutions like inheritance, generics, and reflection may help reduce boilerplate, they often add complexity and hinder readability. Code generation, however, offers a more effective and sustainable approach by automating the creation of clean, visible, and maintainable boilerplate code. With the continued advancements in tools like Roslyn and the C# language, developers can better address the challenges of microservices development, improving both performance and maintainability without sacrificing code clarity.
 
