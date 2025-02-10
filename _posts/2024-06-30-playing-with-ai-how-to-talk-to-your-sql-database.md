@@ -96,7 +96,7 @@ print(retrieved["sql"])
 
 What we see in the console is awesome!
 
-```console
+```terminal
 [139.02415]
 ['Find all orders with a subtotal greater than $1000']
 ['SELECT * FROM Sales.SalesOrderHeader WHERE SubTotal > 1000;']
@@ -106,7 +106,7 @@ I barely did anything and I have a SQL query that I can now use to generate a re
 
 What is displayed when we ask this database to `show employes`?
 
-```console
+```terminal
 [172.91516]
 ['Get the first name and last name of all employees']
 ['SELECT FirstName, LastName FROM HumanResources.Employee;']
@@ -116,7 +116,7 @@ AI will take our jobs!
 
 But what if we ask it about something that it doesn't know! Like `What was the movie where J.Lo fell in love with an AI?` the answer is of course "Atlas" released in 2024, but I would also accept answer "Titanfall the Movie" What our database thinks about it?
 
-```console
+```terminal
 [416.46304]
 ['Find products that have "Bike" in their name']
 ["SELECT * FROM Production.Product WHERE Name LIKE '%Bike%';"]

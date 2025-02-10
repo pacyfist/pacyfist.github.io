@@ -12,26 +12,26 @@ During my university days, I became fascinated with 3D graphics, a challenging f
 
 Let's make a folder for our project.
 
-```console
+```terminal
 mkdir whatever
 cd ./whatever
 ```
 
 Now we and initialize a new node project. That little `-y` is there to avoid answering annoying questions.
 
-```console
+```terminal
 npm init -y
 ```
 
 We'll be using Three.js so let's install it now.
 
-```console
+```terminal
 npm install three
 ```
 
 For completely no reason my favorite bundler is `parcel` so let's install it as dev dependency. 
 
-```console
+```terminal
 npm install --save-dev parcel
 ```
 Those steps gave us an almost ready `package.json` file.
@@ -155,7 +155,7 @@ window.addEventListener('resize', (event) => {
 
 This is a way to run the project that will automatically reload the page if it detects that you changed any file in the source code.
 
-```console
+```terminal
 npm start
 ```
 
@@ -169,7 +169,7 @@ We can easily compile this project into static, minimized files that are ready f
 
 First, run the following command:
 
-```console
+```terminal
 npm run build
 ```
 

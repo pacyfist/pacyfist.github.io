@@ -32,7 +32,7 @@ Before we begin, ensure you have the following installed:
 
 I recommend using [nvm](https://github.com/nvm-sh/nvm) for easily managing Node versions.
 
-```
+```terminal
 nvm list available
 nvm install 23.7.0
 nvm use 23.7.0
@@ -42,7 +42,7 @@ nvm use 23.7.0
 
 Node Package Manager comes bundled with Node.js but usually requires an update.
 
-```
+```terminal
 npm install --global npm
 ```
 
@@ -50,7 +50,7 @@ npm install --global npm
 
 The Command Line Interface for Angular is pretty much the primary tool for anyone working with Angular.
 
-```
+```terminal
 npm install --global @angular/cli
 ```
 
@@ -58,14 +58,14 @@ npm install --global @angular/cli
 
 ### Create a New Angular Project with SCSS Support
 
-```
+```terminal
 ng new my-project --style scss
 cd .\my-project\
 ```
 
 ### Install Tailwind v4, PostCSS, and the Tailwind CSS PostCSS Plugin
 
-```
+```terminal
 npm install tailwindcss@4 @tailwindcss/postcss postcss
 ```
 
@@ -103,7 +103,7 @@ For those who want a rich set of pre-built components, consider adding DaisyUI. 
 
 ### Install DaisyUI
 
-```
+```terminal
 npm i -D daisyui@beta
 ```
 
@@ -135,7 +135,7 @@ If we modify the `src/app/app.component.html` file like this:
 
 and run the application locally:
 
-```
+```terminal
 ng serve
 ```
 

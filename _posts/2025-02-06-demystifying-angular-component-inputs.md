@@ -51,13 +51,13 @@ export class MyComponent {
 
 Let's break this down:
 
-* **`@Input() optionalInput?: string;`**: A standard optional input. The question mark (`?`) means the parent component doesn't *have* to provide a value. If it doesn't, this property will be `undefined`.
+* **`@Input() optionalInput?: string;`**: A standard optional input. The question mark (`?`) means that since the parent component doesn't *have* to provide a value this property could will be `undefined`.
 
 * **`@Input() optionalInputWithDefault: string = 'default value';`**: Another optional input, but this time with a default value. If the parent component doesn't provide a value, this property will be initialized with `'default value'`.
 
-* **`@Input({ required: true }) requiredInput!: string;`**: This is a *required* input. The `required: true` option and the non-null assertion operator (`!`) tell Angular not to show the possible nullability warning, because the parent component *must* provide a value for this input. If it doesn't, you'll get an error.
+* **`@Input({ required: true }) requiredInput!: string;`**: This is a *required* input. The `required: true` option and the non-null assertion operator (`!`) tell TypeScript that since the parent component *must* provide a value for this input it doesn't make sense for it to show the possible nullability warning.
 
-* **`@Input({ transform: (value: string) => value.toUpperCase(), }) optionalTransformingInput: string;`**: This is where things get interesting. The `transform` option lets you modify the input value before it's used in your component. In this case, we're converting the input to uppercase. This input is optional.
+* **`@Input({ transform: (value: string) => value.toUpperCase(), }) optionalTransformingInput: string;`**: This is where things get interesting. The `transform` option lets you modify the input value before it's used in your component. In this case, we're converting the input to uppercase. This input is optional so it can be `undefined`, but you can easily assign a default value by adding `= 'default value';` at the very end.
 
 * **`@Input({ required: true, transform: (value: string) => value.toUpperCase(), }) requiredTransformingInput: string;`**: The best of both worlds! This input is both required *and* transformed. The parent component *must* provide a value, and that value will be converted to uppercase.
 
@@ -98,7 +98,7 @@ export class MyComponent {
 
 Let's break this down:
 
-* **`optionalInput = input<string>();`**: A simple optional input. If the parent component doesn't provide a value, the signal will hold `undefined`. Note that you need to call the signal `optionalInput()` to access it's value in the template.
+* **`optionalInput = input<string>();`**: A simple optional input. If the parent component doesn't provide a value, the signal will hold `undefined`. Since this property now holds a signal and not a value it will never be `undefined`. Note that you need to call the signal `optionalInput()` to access it's value in the template.
 
 * **`optionalInputWithDefault = input<string>('default value');`**: An optional input with a default value. If the parent doesn't provide a value, the signal will be initialized with `'default value'`.
 
