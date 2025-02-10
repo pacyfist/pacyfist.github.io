@@ -1,5 +1,5 @@
 ---
-tags: ["javascript", "typescript", "angular", "components", "signals"]
+tags: ["typescript", "angular", "components", "signals"]
 categories: ["typescript", "angular"]
 title: "Demystifying Angular Component Inputs: From Old School to Signal Power"
 image:
@@ -13,7 +13,7 @@ I've been knee-deep in Angular projects for quite a while now, and one thing I'v
 
 So, I thought, why not create that guide myself? Let's dive into the world of Angular component inputs, exploring both the classic `@Input` decorator approach and the shiny new signal-based `input<T>()`. I'll show you how to keep things simple, readable, and maintainable.
 
-### The `@Input` Decorator: The Old Reliable
+## The `@Input` Decorator: The Old Reliable
 
 For years, the `@Input` decorator has been the go-to way to pass data into every Angular components. It's a solid, dependable tool, but let's be honest, it can get a bit verbose.
 
@@ -61,7 +61,7 @@ Let's break this down:
 
 * **`@Input({ required: true, transform: (value: string) => value.toUpperCase(), }) requiredTransformingInput: string;`**: The best of both worlds! This input is both required *and* transformed. The parent component *must* provide a value, and that value will be converted to uppercase.
 
-### Signal Inputs: The Cool Kid on the Block
+## Signal Inputs: The Cool Kid on the Block
 
 Now, let's talk about signal inputs. Signals are a game-changer in Angular, offering fine-grained reactivity and improved performance. Using signals for component inputs is a more modern and often cleaner approach.
 
@@ -108,7 +108,7 @@ Let's break this down:
 
 * **`requiredTransformingInput = input.required<string, string>({ transform: (value: string) => value.toUpperCase(), });`**: A required input with a transform function.
 
-### Why Signals?
+## Why Signals?
 
 You might be wondering, "Why should I switch to signal inputs?" Here's a few reasons:
 
@@ -117,7 +117,7 @@ You might be wondering, "Why should I switch to signal inputs?" Here's a few rea
 * **Type Safety:** Signals are strongly typed, which can help prevent errors.
 * **They are the future:** Angular is moving more and more towards signals.
 
-### Conclusion
+## Conclusion
 
 Component inputs are a fundamental part of Angular development. Whether you're using the trusty `@Input` decorator or embracing the power of signal inputs, understanding the different options available will help you write cleaner, more maintainable, and more efficient code.
 
