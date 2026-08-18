@@ -1,0 +1,34 @@
+{% comment %}
+  Overrides the Chirpy gem's version of this file.
+
+  The theme loads gtag.js straight away. Here it stays blocked until the
+  visitor accepts the "analytics" category in the cookie banner.
+  CookieConsent swaps `type="text/plain"` for a real type and moves
+  `data-src` into `src` once consent is given.
+
+  See: assets/js/cookieconsent-init.js
+{% endcomment %}
+
+<!-- Google Analytics - runs only after the visitor accepts analytics cookies -->
+<script type="text/plain" data-category="analytics">
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+  gtag('config', '{{ site.analytics.google.id }}');
+</script>
+
+{% comment %}
+  `data-proofer-ignore` keeps html-proofer quiet. The tag is empty and has no
+  `src` on purpose, so its Scripts check would flag it on every page. Using a
+  real `src` instead would put the Google URL in the DOM before consent, where
+  a browser's preload scanner could still fetch it.
+{% endcomment %}
+<script
+  type="text/plain"
+  data-category="analytics"
+  data-src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.google.id }}"
+  data-proofer-ignore
+></script>

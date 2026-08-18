@@ -1,0 +1,15 @@
+{% comment %}
+  Overrides the Chirpy gem's placeholder. This is the last thing inside <head>.
+  Used here to load the cookie banner. Self-hosted, so nothing is fetched from
+  a third party before the visitor has chosen.
+{% endcomment %}
+
+<!-- Cookie banner -->
+<link rel="stylesheet" href="{{ '/assets/cookieconsent/cookieconsent.css' | relative_url }}">
+<style>
+  #cc-main {
+    --cc-font-family: inherit;
+  }
+</style>
+<script defer src="{{ '/assets/cookieconsent/cookieconsent.umd.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/cookieconsent-init.js' | relative_url }}"></script>
