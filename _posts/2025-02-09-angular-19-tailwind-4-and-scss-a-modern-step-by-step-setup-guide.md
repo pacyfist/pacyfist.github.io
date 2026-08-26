@@ -7,8 +7,7 @@ image:
   alt: Crafting Cosmic Web Designs!
 ---
 
-
-
+> **Heads up:** Since Angular 21 the CLI does the setup for you `ng new --style tailwind` replaces most of the steps below. If you are starting a new project, read [this](https://www.pacyfist.dev/posts/angular-22-tailwind-4-daisyui-setup/) instead.
 
 There are already several guides on setting up Angular 19 with Tailwind 4, so why another one? Because I despise CSS and always configure Angular with SCSS instead. That small change allows for much cleaner and more readable styles. Unfortunately, every guide I could find used plain old CSS. It makes sense, since the whole idea of Tailwind is to minimize writing CSS, but I still want SCSS, and that's final!
 
@@ -77,11 +76,12 @@ Time to [configure](https://github.com/postcss/postcss-load-config) PostCSS. In 
 
 ```json
 {
-    "plugins": {
-        "@tailwindcss/postcss": {}
-    }
+  "plugins": {
+    "@tailwindcss/postcss": {}
+  }
 }
 ```
+
 ## Import Tailwind CSS Styles
 
 ### Import Tailwind Directives in styles.scss
@@ -89,7 +89,6 @@ Time to [configure](https://github.com/postcss/postcss-load-config) PostCSS. In 
 Here, we must do something slightly different because we've chosen SCSS. Other tutorials show using the `@import` command, but in SCSS, this command is [depreciated](https://sass-lang.com/blog/import-is-deprecated/) and we should substitute it with `@use`.
 
 Open the `src/styles.scss` file in your project (this is your global stylesheet) and add the following line:
-
 
 ```css
 @use "tailwindcss";
@@ -118,7 +117,6 @@ Update your `src/styles.scss` file to include the DaisyUI plugin:
 
 Now, unfortunately, things get a little quirky. My VS Code keeps showing me a warning: `Unknown at rule @pluginscss(unknownAtRules)`, but that's it. Styles from DaisyUI work fine, so, for the moment, I'm comfortable ignoring this warning.
 
-
 ## Testing configuration
 
 If we modify the `src/app/app.component.html` file like this:
@@ -126,7 +124,9 @@ If we modify the `src/app/app.component.html` file like this:
 ```html
 <main class="main">
   <div class="flex flex-col justify-center items-center p-16">
-    <h1 class="text-3xl underline text-amber-700 mt-10">Hello world from Tailwind</h1>
+    <h1 class="text-3xl underline text-amber-700 mt-10">
+      Hello world from Tailwind
+    </h1>
     <div class="btn btn-primary mt-5">Hello world from DaisyUI</div>
   </div>
 </main>
@@ -140,4 +140,3 @@ ng serve
 ```
 
 We should see a correctly styled page.
-
