@@ -7,8 +7,8 @@ image:
   alt: Crafting Cosmic Web Designs!
 ---
 
-
-
+> **Heads up: this guide targets Angular 19.** Since Angular 21 the CLI does the setup for you — `ng new --style tailwind` replaces most of the steps below. If you are starting a new project, read [Angular 22 + Tailwind 4 + daisyUI Setup: Two Commands](https://www.pacyfist.dev/posts/angular-22-tailwind-4-daisyui-setup/) instead.
+{: .prompt-warning }
 
 There are already several guides on setting up Angular 19 with Tailwind 4, so why another one? Because I despise CSS and always configure Angular with SCSS instead. That small change allows for much cleaner and more readable styles. Unfortunately, every guide I could find used plain old CSS. It makes sense, since the whole idea of Tailwind is to minimize writing CSS, but I still want SCSS, and that's final!
 
