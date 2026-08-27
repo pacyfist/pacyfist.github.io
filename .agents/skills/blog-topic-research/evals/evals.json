@@ -1,0 +1,149 @@
+{
+  "skill_name": "blog-topic-research",
+  "evals": [
+    {
+      "id": 0,
+      "name": "eval-0-google-bing-demand",
+      "prompt": "find a topic to write a blog post about. topic needs to be in high demand from people searching using google and bing. topic needs to be software development related.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "shortlist_size",
+          "text": "Presents a ranked shortlist of between 5 and 8 candidate topics"
+        },
+        {
+          "id": "scored_axes",
+          "text": "Scores candidates on all four axes: Demand, Gap, Fit, and Angle"
+        },
+        {
+          "id": "uses_autocomplete",
+          "text": "Obtains real autocomplete demand data from Google and Bing, via the bundled suggest.py or equivalent direct queries"
+        },
+        {
+          "id": "demand_evidence",
+          "text": "Quotes actual suggestion strings as evidence, rather than asserting demand abstractly"
+        },
+        {
+          "id": "named_incumbents",
+          "text": "Names specific competing pages or authors currently ranking and states concretely what is wrong or stale about them"
+        },
+        {
+          "id": "reproducibility_filter",
+          "text": "Applies the constraint that Filip must be able to run the topic hands-on, and says so when it drops a candidate for failing it"
+        },
+        {
+          "id": "skipped_section",
+          "text": "Includes rejected candidates with stated reasons for rejection"
+        },
+        {
+          "id": "confidence_split",
+          "text": "Distinguishes what was measured (autocomplete, what ranks, primary sources) from what was inferred (where demand goes next)"
+        },
+        {
+          "id": "bing_reasoning",
+          "text": "Reports Google and Bing demand separately and notes the Microsoft-stack Bing advantage"
+        },
+        {
+          "id": "head_term_targeting",
+          "text": "Addresses which exact phrasing to target, treating a missing suggestion tree as a titling problem rather than a dead topic"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "eval-1-free-weekend-traffic",
+      "prompt": "what should I write about next? i've got a free weekend and want something that'll actually pull traffic",
+      "files": [],
+      "assertions": [
+        {
+          "id": "shortlist_size",
+          "text": "Presents a ranked shortlist of between 5 and 8 candidate topics"
+        },
+        {
+          "id": "scored_axes",
+          "text": "Scores candidates on all four axes: Demand, Gap, Fit, and Angle"
+        },
+        {
+          "id": "uses_autocomplete",
+          "text": "Obtains real autocomplete demand data from Google and Bing, via the bundled suggest.py or equivalent direct queries"
+        },
+        {
+          "id": "demand_evidence",
+          "text": "Quotes actual suggestion strings as evidence, rather than asserting demand abstractly"
+        },
+        {
+          "id": "named_incumbents",
+          "text": "Names specific competing pages or authors currently ranking and states concretely what is wrong or stale about them"
+        },
+        {
+          "id": "reproducibility_filter",
+          "text": "Applies the constraint that Filip must be able to run the topic hands-on, and says so when it drops a candidate for failing it"
+        },
+        {
+          "id": "skipped_section",
+          "text": "Includes rejected candidates with stated reasons for rejection"
+        },
+        {
+          "id": "confidence_split",
+          "text": "Distinguishes what was measured (autocomplete, what ranks, primary sources) from what was inferred (where demand goes next)"
+        },
+        {
+          "id": "weekend_scope",
+          "text": "Respects the weekend constraint, separating topics writable in two days from larger ones"
+        },
+        {
+          "id": "refresh_option",
+          "text": "Considers refreshing an existing stale post as an alternative to writing a new one"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "eval-2-dotnet-ideas",
+      "prompt": "give me some post ideas around .net, feel like ive been neglecting the C# side of the blog lately",
+      "files": [],
+      "assertions": [
+        {
+          "id": "shortlist_size",
+          "text": "Presents a ranked shortlist of between 5 and 8 candidate topics"
+        },
+        {
+          "id": "scored_axes",
+          "text": "Scores candidates on all four axes: Demand, Gap, Fit, and Angle"
+        },
+        {
+          "id": "uses_autocomplete",
+          "text": "Obtains real autocomplete demand data from Google and Bing, via the bundled suggest.py or equivalent direct queries"
+        },
+        {
+          "id": "demand_evidence",
+          "text": "Quotes actual suggestion strings as evidence, rather than asserting demand abstractly"
+        },
+        {
+          "id": "named_incumbents",
+          "text": "Names specific competing pages or authors currently ranking and states concretely what is wrong or stale about them"
+        },
+        {
+          "id": "reproducibility_filter",
+          "text": "Applies the constraint that Filip must be able to run the topic hands-on, and says so when it drops a candidate for failing it"
+        },
+        {
+          "id": "skipped_section",
+          "text": "Includes rejected candidates with stated reasons for rejection"
+        },
+        {
+          "id": "confidence_split",
+          "text": "Distinguishes what was measured (autocomplete, what ranks, primary sources) from what was inferred (where demand goes next)"
+        },
+        {
+          "id": "dotnet_constrained",
+          "text": "Keeps every proposed candidate inside the .NET/C# ecosystem as the user asked"
+        },
+        {
+          "id": "sequel_opportunity",
+          "text": "Identifies at least one candidate as a sequel building on a specific existing post"
+        }
+      ]
+    }
+  ]
+}
