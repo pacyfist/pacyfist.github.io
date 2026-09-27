@@ -11,7 +11,7 @@ Back in February 2025, I wrote about [taming the UUID beast](/posts/taming-the-u
 
 When .NET 9 introduced RFC 9562 support with `Guid.CreateVersion7()`, it felt like the holy grail. We could finally generate time-ordered, globally unique identifiers right inside our application code, assign foreign keys in memory, and keep our clustered indexes nice and tidy. Naturally, I fired up a fresh test suite to celebrate.
 
-Then I checked `sys.dm_db_index_physical_stats`, and my jaw hit the keyboard: **99.11% index fragmentation**.
+Then I checked `sys.dm_db_index_physical_stats`, and my jaw hit the keyboard: **99.04% index fragmentation**.
 
 ## The Dream of Client-Side GUIDs
 
@@ -25,17 +25,27 @@ So why does standard .NET `Guid.CreateVersion7()` completely ruin a SQL Server c
 
 ## Spinning Up the Benchmark in Podman
 
-To find out, I put together an isolated benchmark using SQL Server 2022 running inside rootless Podman on Linux:
+To find out, I put together an isolated benchmark using rootless Podman on Linux, spinning up both SQL Server 2022 and the latest SQL Server 2025 release side by side:
 
 ```bash
+# SQL Server 2022
 podman run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=BenchmarkSql2026!" -p 1433:1433 -d --name sql2022 mcr.microsoft.com/mssql/server:2022-latest
 ```
 
 ```text
-c4e1a7b889d012489c6f2a8934df7b819e9921bc4e5781a0491823901a84f329
+19b0ce730b40638355a5ef87181cf08b62332f27b0b607dba9adbfecfb6e3b26
 ```
 
-I wrote a .NET 10 benchmark harness that creates a dedicated database (`BenchmarkDb`) and tests five distinct identifier strategies:
+```bash
+# SQL Server 2025 (latest release)
+podman run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=BenchmarkSql2026!" -p 1434:1433 -d --name sql2025 mcr.microsoft.com/mssql/server:2025-latest
+```
+
+```text
+939d9dbda993d1ab3f8dccd54dc161ccdddb2d5baef5873a66e92170d3e6b89b
+```
+
+I wrote a .NET 10 benchmark harness that creates a dedicated database (`BenchmarkDb`) on each instance and tests five distinct identifier strategies:
 
 1. **Random Guid (`Guid.NewGuid` / `NEWID`)**
 2. **SQL Server `NEWSEQUENTIALID()`** (database default constraint)
@@ -43,12 +53,90 @@ I wrote a .NET 10 benchmark harness that creates a dedicated database (`Benchmar
 4. **Byte-Swapped UUIDv7** (mapped from standard `Guid.CreateVersion7`)
 5. **Byte-Swapped Monotonic UUIDv7** (with RFC 9562 sub-millisecond counter)
 
-Each table used an identical clustered primary key schema with a payload column and timestamp. The runner inserted 200,000 rows per strategy (1,000,000 rows total) in explicit batches of 1,000 rows.
+Each table used an identical clustered primary key schema with a payload column and timestamp:
 
-Here is the exact terminal run:
+```sql
+CREATE TABLE [dbo].[Bench_RandomGuid] (
+    [Id] UNIQUEIDENTIFIER NOT NULL,
+    [SequenceNumber] INT NOT NULL,
+    [Payload] NVARCHAR(100) NOT NULL,
+    [CreatedAt] DATETIME2(7) NOT NULL,
+    CONSTRAINT [PK_Bench_RandomGuid] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+```
+
+The runner inserted 200,000 rows per strategy (1,000,000 rows total) inside single transactions using batched multi-row inserts of 1,000 rows:
+
+```csharp
+private static async Task RunStrategyAsync(
+    string tableName,
+    Func<Guid> guidGenerator,
+    bool useDbDefault)
+{
+    await using var conn = new SqlConnection(DbConnString);
+    await conn.OpenAsync();
+
+    int batches = TotalRows / BatchSize; // 200,000 / 1,000
+
+    await using var tx = conn.BeginTransaction();
+    var sb = new StringBuilder(128 * BatchSize);
+
+    for (int b = 0; b < batches; b++)
+    {
+        sb.Clear();
+        if (useDbDefault)
+        {
+            sb.Append($"INSERT INTO [dbo].[{tableName}] ([SequenceNumber], [Payload], [CreatedAt]) VALUES ");
+            for (int i = 0; i < BatchSize; i++)
+            {
+                int seq = (b * BatchSize) + i;
+                if (i > 0) sb.Append(", ");
+                sb.Append($"({seq}, 'Payload-{seq:D7}', SYSUTCDATETIME())");
+            }
+        }
+        else
+        {
+            sb.Append($"INSERT INTO [dbo].[{tableName}] ([Id], [SequenceNumber], [Payload], [CreatedAt]) VALUES ");
+            for (int i = 0; i < BatchSize; i++)
+            {
+                int seq = (b * BatchSize) + i;
+                Guid id = guidGenerator();
+                if (i > 0) sb.Append(", ");
+                sb.Append($"('{id}', {seq}, 'Payload-{seq:D7}', SYSUTCDATETIME())");
+            }
+        }
+
+        await using var cmd = new SqlCommand(sb.ToString(), conn, tx);
+        await cmd.ExecuteNonQueryAsync();
+    }
+
+    await tx.CommitAsync();
+}
+```
+
+We execute this loop across each strategy:
+
+```csharp
+// 1. Random Guid
+await RunStrategyAsync("Bench_RandomGuid", () => Guid.NewGuid(), useDbDefault: false);
+
+// 2. SQL Server NEWSEQUENTIALID() (database default)
+await RunStrategyAsync("Bench_SequentialGuid", () => Guid.Empty, useDbDefault: true);
+
+// 3. Unmodified .NET Guid.CreateVersion7()
+await RunStrategyAsync("Bench_UuidV7_Unmodified", () => Guid.CreateVersion7(), useDbDefault: false);
+
+// 4. Byte-Swapped UUIDv7 (from Guid.CreateVersion7)
+await RunStrategyAsync("Bench_UuidV7_ByteSwapped", () => SqlUuidV7.ToSqlGuid(Guid.CreateVersion7()), useDbDefault: false);
+
+// 5. Monotonic Byte-Swapped UUIDv7 (RFC 9562 sub-ms counter)
+await RunStrategyAsync("Bench_UuidV7_Monotonic", () => MonotonicSqlUuidV7.Create(), useDbDefault: false);
+```
+
+We run the suite first against SQL Server 2022 on port 1433:
 
 ```bash
-dotnet run -c Release
+dotnet run -c Release -- 1433
 ```
 
 ```text
@@ -59,65 +147,136 @@ dotnet run -c Release
 
 Connecting to SQL Server
 [SUCCESS] Connected to SQL Server!
-SQL Server Version: Microsoft SQL Server 2022 (RTM-CU27) (KB5104824) - 16.0.4295.3 (X64) 
+SQL Server Version: Microsoft SQL Server 2022 (RTM-CU27) (KB5104824) - 16.0.4295.3 (X64)  	Aug 26 2026 11:02:22  	Copyright (C) 2022 Microsoft Corporation 	Developer Edition (64-bit) on Linux (Ubuntu 22.04.5 LTS) <X64>
 Rebuilding clean BenchmarkDb database and tables...
 Database BenchmarkDb initialized with all 5 benchmark tables.
 
 [1/5] Running Strategy 1: Random Guid (Guid.NewGuid)...
-  Inserted 200,000 rows in 28,426 ms (7,036 rows/sec). Page Splits Delta: 4,941
+  Inserted 200,000 rows in 31,140 ms (6,423 rows/sec). Page Splits Delta: 2,540
   Analyzing index physical stats (DETAILED mode)...
-  Fragmentation: 99.13% | Pages: 4,917 | Fragments: 4,916 | Page Density: 67.82%
+  Fragmentation: 99.21% | Pages: 2,519 | Fragments: 2,519 | Page Density: 69.62%
 
 [2/5] Running Strategy 2: SQL Server NEWSEQUENTIALID()...
-  Inserted 200,000 rows in 19,471 ms (10,272 rows/sec). Page Splits Delta: 3,416
+  Inserted 200,000 rows in 23,746 ms (8,422 rows/sec). Page Splits Delta: 1,767
   Analyzing index physical stats (DETAILED mode)...
-  Fragmentation: 0.80% | Pages: 3,390 | Fragments: 31 | Page Density: 98.38%
+  Fragmentation: 0.74% | Pages: 1,755 | Fragments: 15 | Page Density: 99.94%
 
 [3/5] Running Strategy 3: Unmodified .NET Guid.CreateVersion7()...
-  Inserted 200,000 rows in 28,481 ms (7,022 rows/sec). Page Splits Delta: 4,948
+  Inserted 200,000 rows in 31,470 ms (6,355 rows/sec). Page Splits Delta: 2,506
   Analyzing index physical stats (DETAILED mode)...
-  Fragmentation: 99.11% | Pages: 4,926 | Fragments: 4,926 | Page Density: 67.69%
+  Fragmentation: 99.04% | Pages: 2,493 | Fragments: 2,493 | Page Density: 70.35%
 
 [4/5] Running Strategy 4: Byte-swapped SqlGuid UUIDv7 (Guid.CreateVersion7)...
-  Inserted 200,000 rows in 34,408 ms (5,813 rows/sec). Page Splits Delta: 4,522
+  Inserted 200,000 rows in 30,455 ms (6,567 rows/sec). Page Splits Delta: 2,701
   Analyzing index physical stats (DETAILED mode)...
-  Fragmentation: 68.25% | Pages: 4,492 | Fragments: 3,083 | Page Density: 74.24%
+  Fragmentation: 83.90% | Pages: 2,683 | Fragments: 2,253 | Page Density: 65.36%
 
 [5/5] Running Strategy 5: Byte-swapped Monotonic UUIDv7 (RFC 9562 Sub-ms Counter)...
-  Inserted 200,000 rows in 25,814 ms (7,748 rows/sec). Page Splits Delta: 3,413
+  Inserted 200,000 rows in 30,288 ms (6,603 rows/sec). Page Splits Delta: 1,767
   Analyzing index physical stats (DETAILED mode)...
-  Fragmentation: 0.80% | Pages: 3,390 | Fragments: 30 | Page Density: 98.38%
+  Fragmentation: 0.74% | Pages: 1,755 | Fragments: 15 | Page Density: 99.94%
 
 ==========================================================================================================
                                      FINAL BENCHMARK RESULTS SUMMARY
 ==========================================================================================================
 Strategy                                                | Duration   | Rows/Sec   | Fragmentation  | Pages   | Density 
 --------------------------------------------------------------------------------------------------------------------
-Strategy 1: Random Guid (Guid.NewGuid)                  |  28,426 ms |    7,036 |       99.13% |   4,917 |  67.82%
-Strategy 2: SQL Server NEWSEQUENTIALID()                |  19,471 ms |   10,272 |        0.80% |   3,390 |  98.38%
-Strategy 3: Unmodified .NET Guid.CreateVersion7()       |  28,481 ms |    7,022 |       99.11% |   4,926 |  67.69%
-Strategy 4: Byte-swapped UUIDv7 (Guid.CreateVersion7)   |  34,408 ms |    5,813 |       68.25% |   4,492 |  74.24%
-Strategy 5: Byte-swapped Monotonic UUIDv7 (Sub-ms Counter) |  25,814 ms |    7,748 |        0.80% |   3,390 |  98.38%
+Strategy 1: Random Guid (Guid.NewGuid)                  |  31,140 ms |    6,423 |       99.21% |   2,519 |  69.62%
+Strategy 2: SQL Server NEWSEQUENTIALID()                |  23,746 ms |    8,422 |        0.74% |   1,755 |  99.94%
+Strategy 3: Unmodified .NET Guid.CreateVersion7()       |  31,470 ms |    6,355 |       99.04% |   2,493 |  70.35%
+Strategy 4: Byte-swapped UUIDv7 (Guid.CreateVersion7)   |  30,455 ms |    6,567 |       83.90% |   2,683 |  65.36%
+Strategy 5: Byte-swapped Monotonic UUIDv7 (Sub-ms Counter) |  30,288 ms |    6,603 |        0.74% |   1,755 |  99.94%
 ==========================================================================================================
 ```
 
-## The DMV Scoreboard
+Then we run the identical benchmark suite against the latest SQL Server 2025 release on port 1434:
 
-Let's look at the numbers pulled straight from `sys.dm_db_index_physical_stats` and `sys.dm_os_performance_counters`:
+```bash
+dotnet run -c Release -- 1434
+```
 
-| Strategy | Rows | Duration | Rows/Sec | Leaf Fragmentation | Leaf Pages | Page Density | Page Splits Delta |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Strategy 1: Random Guid (`Guid.NewGuid`)** | 200,000 | 28,426 ms | 7,036 | **99.13%** | 4,917 | 67.82% | 4,941 |
-| **Strategy 2: SQL Server `NEWSEQUENTIALID()`** | 200,000 | 19,471 ms | 10,272 | **0.80%** | **3,390** | **98.38%** | 3,416 |
-| **Strategy 3: Unmodified `Guid.CreateVersion7()`** | 200,000 | 28,481 ms | 7,022 | **99.11%** | 4,926 | 67.69% | 4,948 |
-| **Strategy 4: Byte-Swapped UUIDv7** | 200,000 | 34,408 ms | 5,813 | **68.25%** | 4,492 | 74.24% | 4,522 |
-| **Strategy 5: Monotonic Byte-Swapped UUIDv7** | 200,000 | 25,814 ms | 7,748 | **0.80%** | **3,390** | **98.38%** | 3,413 |
+```text
+==========================================================================================================
+                         SQL SERVER 2025 UUIDv7 BENCHMARK SUITE
+                         Rows Per Strategy: 200,000 | Batch Size: 1,000
+==========================================================================================================
 
-Look closely at Strategy 3. Unmodified `Guid.CreateVersion7()` is **indistinguishable from random `Guid.NewGuid()`**.
+Connecting to SQL Server
+[SUCCESS] Connected to SQL Server!
+SQL Server Version: Microsoft SQL Server 2025 (RTM-CU9) (KB5122048) - 17.0.5005.3 (X64)  	Aug 27 2026 09:30:16  	Copyright (C) 2025 Microsoft Corporation 	Enterprise Developer Edition (64-bit) on Linux (Ubuntu 24.04.4 LTS) <X64>
+Rebuilding clean BenchmarkDb database and tables...
+Database BenchmarkDb initialized with all 5 benchmark tables.
 
-Both suffered over 99.1% fragmentation. Both needed more than 4,900 leaf pages to store the exact same 200,000 rows that `NEWSEQUENTIALID()` stored in 3,390 pages. That is **45.3% storage bloating** in your data file and 45.3% wasted memory in your SQL Server buffer pool cache!
+[1/5] Running Strategy 1: Random Guid (Guid.NewGuid)...
+  Inserted 200,000 rows in 42,578 ms (4,697 rows/sec). Page Splits Delta: 2,553
+  Analyzing index physical stats (DETAILED mode)...
+  Fragmentation: 99.21% | Pages: 2,530 | Fragments: 2,530 | Page Density: 69.32%
 
-Why does an official time-ordered GUID standard fail so spectacularly on SQL Server?
+[2/5] Running Strategy 2: SQL Server NEWSEQUENTIALID()...
+  Inserted 200,000 rows in 28,996 ms (6,898 rows/sec). Page Splits Delta: 1,767
+  Analyzing index physical stats (DETAILED mode)...
+  Fragmentation: 0.74% | Pages: 1,755 | Fragments: 15 | Page Density: 99.94%
+
+[3/5] Running Strategy 3: Unmodified .NET Guid.CreateVersion7()...
+  Inserted 200,000 rows in 40,089 ms (4,989 rows/sec). Page Splits Delta: 2,527
+  Analyzing index physical stats (DETAILED mode)...
+  Fragmentation: 98.93% | Pages: 2,515 | Fragments: 2,515 | Page Density: 69.73%
+
+[4/5] Running Strategy 4: Byte-swapped SqlGuid UUIDv7 (Guid.CreateVersion7)...
+  Inserted 200,000 rows in 38,770 ms (5,159 rows/sec). Page Splits Delta: 2,734
+  Analyzing index physical stats (DETAILED mode)...
+  Fragmentation: 82.80% | Pages: 2,715 | Fragments: 2,251 | Page Density: 64.59%
+
+[5/5] Running Strategy 5: Byte-swapped Monotonic UUIDv7 (RFC 9562 Sub-ms Counter)...
+  Inserted 200,000 rows in 38,465 ms (5,200 rows/sec). Page Splits Delta: 1,767
+  Analyzing index physical stats (DETAILED mode)...
+  Fragmentation: 0.74% | Pages: 1,755 | Fragments: 15 | Page Density: 99.94%
+
+==========================================================================================================
+                                     FINAL BENCHMARK RESULTS SUMMARY
+==========================================================================================================
+Strategy                                                | Duration   | Rows/Sec   | Fragmentation  | Pages   | Density 
+--------------------------------------------------------------------------------------------------------------------
+Strategy 1: Random Guid (Guid.NewGuid)                  |  42,578 ms |    4,697 |       99.21% |   2,530 |  69.32%
+Strategy 2: SQL Server NEWSEQUENTIALID()                |  28,996 ms |    6,898 |        0.74% |   1,755 |  99.94%
+Strategy 3: Unmodified .NET Guid.CreateVersion7()       |  40,089 ms |    4,989 |       98.93% |   2,515 |  69.73%
+Strategy 4: Byte-swapped UUIDv7 (Guid.CreateVersion7)   |  38,770 ms |    5,159 |       82.80% |   2,715 |  64.59%
+Strategy 5: Byte-swapped Monotonic UUIDv7 (Sub-ms Counter) |  38,465 ms |    5,200 |        0.74% |   1,755 |  99.94%
+==========================================================================================================
+```
+
+## The DMV Scoreboard: Side-by-Side Comparison
+
+Let's look at the numbers pulled straight from `sys.dm_db_index_physical_stats` and `sys.dm_os_performance_counters` across both database versions:
+
+| Strategy | Metric | SQL Server 2022 (CU27) | SQL Server 2025 (CU9) |
+| :--- | :--- | :---: | :---: |
+| **Strategy 1: Random Guid (`Guid.NewGuid`)** | Leaf Fragmentation | **99.21%** | **99.21%** |
+| | Leaf Pages | 2,519 | 2,530 |
+| | Page Density | 69.62% | 69.32% |
+| | Page Splits Delta | 2,540 | 2,553 |
+| **Strategy 2: SQL Server `NEWSEQUENTIALID()`** | Leaf Fragmentation | **0.74%** | **0.74%** |
+| | Leaf Pages | **1,755** | **1,755** |
+| | Page Density | **99.94%** | **99.94%** |
+| | Page Splits Delta | 1,767 | 1,767 |
+| **Strategy 3: Unmodified `Guid.CreateVersion7()`** | Leaf Fragmentation | **99.04%** | **98.93%** |
+| | Leaf Pages | 2,493 | 2,515 |
+| | Page Density | 70.35% | 69.73% |
+| | Page Splits Delta | 2,506 | 2,527 |
+| **Strategy 4: Byte-Swapped UUIDv7** | Leaf Fragmentation | **83.90%** | **82.80%** |
+| | Leaf Pages | 2,683 | 2,715 |
+| | Page Density | 65.36% | 64.59% |
+| | Page Splits Delta | 2,701 | 2,734 |
+| **Strategy 5: Monotonic Byte-Swapped UUIDv7** | Leaf Fragmentation | **0.74%** | **0.74%** |
+| | Leaf Pages | **1,755** | **1,755** |
+| | Page Density | **99.94%** | **99.94%** |
+| | Page Splits Delta | 1,767 | 1,767 |
+
+Look closely at Strategy 3 across both engines. Unmodified `Guid.CreateVersion7()` is **indistinguishable from random `Guid.NewGuid()`** on both SQL Server 2022 and the latest SQL Server 2025.
+
+Both suffered over 98.9% - 99.2% fragmentation. Both needed more than 2,500 leaf pages to store the exact same 200,000 rows that `NEWSEQUENTIALID()` stored in 1,755 pages. That is **43.5% storage bloating** in your data file and 43.5% wasted memory in your SQL Server buffer pool cache!
+
+Why does an official time-ordered GUID standard fail so spectacularly across both generations of SQL Server?
 
 ## Mystery 1: The 1998 Time Capsule
 
@@ -158,11 +317,13 @@ When SQL Server compares two `uniqueidentifier` values, it **starts at bytes 10 
 
 The chance of two rows having matching bytes 10 to 15 is 1 in 281 trillion. SQL Server **never even reaches bytes 0 to 5**. To the storage engine, your time-ordered UUIDv7 looks like pure chaos.
 
-## Mystery 2: Why Naive Byte Swapping Still Hits 68% Fragmentation
+Even in the latest SQL Server 2025 release, Microsoft kept this legacy sorting behavior intact. Changing how `uniqueidentifier` values sort would silently break existing clustered indexes, partition schemes, and replication topologies across millions of databases worldwide.
+
+## Mystery 2: Why Naive Byte Swapping Still Hits 83% Fragmentation
 
 Once you realize SQL Server looks at bytes 10 to 15 first, the immediate reaction is simple: just move the 48-bit timestamp from bytes 0-5 over to bytes 10-15!
 
-That is exactly what Strategy 4 did. But as the scoreboard shows, it still ended up with **68.25% fragmentation** and **4,522 page splits**.
+That is exactly what Strategy 4 did. But as the scoreboard shows, it still ended up with **82.80% - 83.90% fragmentation** and over **2,700 page splits** on both engines.
 
 Why did simple byte swapping fail?
 
@@ -187,12 +348,12 @@ Across different milliseconds, the primary timestamp advances cleanly. Within th
 
 SQL Server comparison inversions drop to zero. Every new row appends neatly to the end of the clustered index.
 
-Look back at Strategy 5 in our scoreboard:
-- **0.80% leaf fragmentation**
-- **98.38% page density**
-- **3,390 leaf pages**
+Look back at Strategy 5 in our scoreboard across both SQL Server 2022 and SQL Server 2025:
+- **0.74% leaf fragmentation**
+- **99.94% page density**
+- **1,755 leaf pages**
 
-It matched `NEWSEQUENTIALID()` down to the exact page count, but every single ID was generated in .NET memory before touching the database!
+It matched `NEWSEQUENTIALID()` down to the exact page count (1,755 pages) and identical split count (1,767 splits), but every single ID was generated in .NET memory before touching the database!
 
 ## The Complete Zero-Allocation C# Implementation
 
@@ -401,21 +562,24 @@ WHERE ips.index_level = 0; -- Leaf level only
 
 *(Replace `dbo.Orders` with your target table name, or pass `NULL` to evaluate every table in your database.)*
 
-Here is what the output looks like when comparing random GUIDs against our monotonic UUIDv7 keys:
+Here is what the output looks like when comparing random GUIDs against our monotonic UUIDv7 keys across both database engines:
 
 | TableName | IndexType | TotalPages | IndexSizeMB | AvgFragmentationPct | AvgPageSpaceUsedPct | FragmentCount | TotalRows |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| Bench_RandomGuid | CLUSTERED INDEX | 4,917 | 38.41 MB | 99.13% | 67.82% | 4,916 | 200,000 |
-| Bench_UuidV7_Monotonic | CLUSTERED INDEX | 3,390 | 26.48 MB | 0.80% | 98.38% | 30 | 200,000 |
+| Bench_RandomGuid (2022) | CLUSTERED INDEX | 2,519 | 19.68 MB | 99.21% | 69.62% | 2,519 | 200,000 |
+| Bench_UuidV7_Monotonic (2022) | CLUSTERED INDEX | 1,755 | 13.71 MB | 0.74% | 99.94% | 15 | 200,000 |
+| Bench_RandomGuid (2025) | CLUSTERED INDEX | 2,530 | 19.77 MB | 99.21% | 69.32% | 2,530 | 200,000 |
+| Bench_UuidV7_Monotonic (2025) | CLUSTERED INDEX | 1,755 | 13.71 MB | 0.74% | 99.94% | 15 | 200,000 |
 
 If your `AvgPageSpaceUsedPct` sits down around 65% to 70%, random GUID inserts are silently stealing a third of your storage and buffer pool memory.
 
 ## Summary
 
-- **Standard `Guid.CreateVersion7()` fails on SQL Server**: Because SQL Server evaluates bytes 10 to 15 first, it treats UUIDv7 as random noise, hitting **99.11% index fragmentation**.
-- **Naive byte swapping is not enough**: Moving the timestamp to bytes 10 to 15 leaves high-throughput inserts vulnerable to collisions within the same millisecond, still causing **68.25% fragmentation**.
-- **Monotonic sequence counters fix the B-tree**: Adding a 12-bit sequence counter in `rand_a` guarantees strict ordering even across thousands of inserts in the same millisecond, achieving **0.80% fragmentation**.
-- **Identical efficiency to `NEWSEQUENTIALID()`**: Monotonic byte-swapped UUIDv7 achieves 98.38% page density and 3,390 pages for 200,000 rows, matching the database engine default while running entirely on the client.
+- **Standard `Guid.CreateVersion7()` fails on SQL Server 2022 and 2025**: Because SQL Server evaluates bytes 10 to 15 first, it treats UUIDv7 as random noise, hitting **~99% index fragmentation**.
+- **The latest SQL Server 2025 does not change UUID sorting**: Microsoft kept the 1998 byte comparison order intact for backward compatibility, meaning UUIDv7 suffers the exact same fragmentation penalty on modern instances.
+- **Naive byte swapping is not enough**: Moving the timestamp to bytes 10 to 15 leaves high-throughput inserts vulnerable to collisions within the same millisecond, still causing **~83% fragmentation**.
+- **Monotonic sequence counters fix the B-tree**: Adding a 12-bit sequence counter in `rand_a` guarantees strict ordering even across thousands of inserts in the same millisecond, achieving **0.74% fragmentation**.
+- **Identical efficiency to `NEWSEQUENTIALID()`**: Monotonic byte-swapped UUIDv7 achieves 99.94% page density and 1,755 pages for 200,000 rows on both engines, matching the database engine default while running entirely on the client.
 - **Full DDD and EF Core support**: Client-side generation eliminates database roundtrips for primary keys, letting you assign foreign keys and stream events before calling `SaveChanges()`.
 
 If you are building .NET microservices on SQL Server, do not blindly swap `Guid.NewGuid()` for `Guid.CreateVersion7()`. Drop in the monotonic byte-swapper, keep your B-trees healthy, and enjoy the best of both worlds.
@@ -429,5 +593,7 @@ If you are building .NET microservices on SQL Server, do not blindly swap `Guid.
 - [Medo.Uuid7 FillBytes7MsSql Source Code](https://github.com/medo64/Medo.Uuid7/blob/4b8ccbae25882bc3677157c1fd7764f3a1d7f571/src/Medo.Uuid7/Uuid7.Implementation.cs#L77) - Josip Medved's C# implementation for formatting UUIDv7 into SQL Server binary order.
 - [SQLskills: GUIDs as PRIMARY KEYs and Clustering Keys](https://www.sqlskills.com/blogs/kimberly/guids-as-primary-keys-andor-the-clustering-key-the-ultimate-guide/) - Kimberly Tripp's deep dive into random GUID page splits, page density decay, and buffer cache bloat.
 - [Taming the UUID Beast (Part 1)](/posts/taming-the-uuid-beast-how-to-avoid-clustered-index-fragmentation-in-sql-server/) - The February 2025 predecessor post demonstrating random GUID fragmentation versus `NEWSEQUENTIALID()`.
+
+
 
 
