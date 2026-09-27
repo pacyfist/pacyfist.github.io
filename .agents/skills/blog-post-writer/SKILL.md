@@ -138,7 +138,7 @@ The wording should be unique in every new post. Avoid repeating phrases from pre
 - Casual and friendly, like telling a story to a coworker.
 - Be brief. Use simple words. Short sentences, short paragraphs (1-3 sentences).
 - Explain concepts with everyday analogies understandable to every computer nerd, not just the specialists. Avoid jargon unless you define it in plain English.
-- Use `##` headings to break the post into small steps. End with a `## Summary` section: a short bullet list of takeaways plus one friendly closing tip.
+- Use `##` headings to break the post into small steps. End with a `## Summary` section (a short bullet list of takeaways plus one friendly closing tip) followed by a `## Resources` section.
 - Bold the key takeaway phrases. Humor is welcome; carry it in the words.
 - **No emoji anywhere in the prose, headings, or summary.** The one exception is
   console output: if a command really printed `✔` or similar, quote it exactly as
@@ -148,7 +148,17 @@ The wording should be unique in every new post. Avoid repeating phrases from pre
   The same exception applies: never rewrite a dash that appears inside real console
   output, a file path, a command, or a quoted error message.
 
+## Resources section (required)
+
+Every post concludes with a `## Resources` section containing a clean bullet list of primary sources, specifications, documentation, and repositories used:
+
+- **Use GitHub permalinks**: Never link to `blob/main` or `blob/master`. Pin GitHub source code links to exact commit SHAs (or stable release tags) with line numbers (`#L...`) so links do not break when files are later modified or reorganized.
+- **Prioritize primary sources**: RFC specifications, official vendor documentation, reference source code, and authoritative community deep dives.
+- **Format**: `- [Link Text](URL) - One concise sentence explaining what this resource covers.`
+- Maintain the same style rules: no emojis, plain hyphens `-` only.
+
 ## Console commands
+
 
 Every console command must be followed by its result:
 
@@ -272,6 +282,7 @@ not fine is a mascot standing in for the concept because the concept was hard to
 - [ ] No em or en dashes outside quoted output:
       `grep -n '[—–]' _posts/YYYY-MM-DD-*.md`
 - [ ] Post reads casual, brief, simple words.
+- [ ] Post concludes with a `## Resources` section citing primary sources, with all GitHub source code links pinned to permanent commit SHAs and line numbers.
 - [ ] Image exists, or prompt file is in place and the user was told to generate it,
       normalize it with the `magick` command, and then delete the prompt file.
 - [ ] If `main.jpg` exists, it measures exactly 1280x720 - check, don't assume:
