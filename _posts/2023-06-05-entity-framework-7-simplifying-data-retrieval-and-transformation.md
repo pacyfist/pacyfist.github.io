@@ -1,7 +1,14 @@
 ---
-tags: ["csharp", "entity framework"]
-categories: ["csharp", "entity framework"]
-title: "Entity Framework 7: Simplifying Data Retrieval and Transformation!"
+tags:
+- csharp
+- entity framework
+categories:
+- csharp
+- entity framework
+title: 'Entity Framework 7: Simplifying Data Retrieval and Transformation!'
+image:
+  path: /assets/img/2023-06-05/main.jpg
+  alt: A flat retro-tech editorial illustration.
 ---
 
 Well, it seems like I've been fumbling around with entity framework like a clumsy monkey! Turns out there's a ridiculously slick method to fetch data from a database, and I've been oblivious to it all this time. Talk about missing the coding boat!

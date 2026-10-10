@@ -1,7 +1,14 @@
 ---
-tags: ["csharp", "entity framework"]
-categories: ["csharp", "entity framework"]
-title: "Entity Framework 7: Bulk Updates and Deletes Made Easy!"
+tags:
+- csharp
+- entity framework
+categories:
+- csharp
+- entity framework
+title: 'Entity Framework 7: Bulk Updates and Deletes Made Easy!'
+image:
+  path: /assets/img/2023-06-01/main.jpg
+  alt: A flat retro-tech editorial illustration.
 ---
 
 Guess what? I've been living under a rock because I just found out that entity framework in version 7 finally fixed one of its massive blunders. Can you believe it? The API got a serious makeover for handling bulk updates and deletes, and boy, it's looking sweet!

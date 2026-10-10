@@ -1,7 +1,15 @@
 ---
-tags: ["paradigms", "functional programming", "csharp"]
-categories: ["programming", "paradigms"]
-title: "What is functional programming?"
+tags:
+- paradigms
+- functional programming
+- csharp
+categories:
+- programming
+- paradigms
+title: What is functional programming?
+image:
+  path: /assets/img/2023-01-19/main.jpg
+  alt: A flat retro-tech editorial illustration.
 ---
 
 This is a very good question. Do you know? Because I don't. A lot of people say that it's awesome and much better than thinking about objects, but I never got a clear answer what it is exactly.

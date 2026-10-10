@@ -1,7 +1,15 @@
 ---
-tags: ["csharp", "regex", "code generators"]
-categories: ["csharp", "code generators"]
-title: "Supercharging Regex Performance with C# Code Generation"
+tags:
+- csharp
+- regex
+- code generators
+categories:
+- csharp
+- code generators
+title: Supercharging Regex Performance with C# Code Generation
+image:
+  path: /assets/img/2023-05-31/main.jpg
+  alt: A flat retro-tech editorial illustration.
 ---
 
 I decided to dive deeper into the code generation feature of the Roselyn compiler. And guess what? I stumbled upon this mind-blowing discovery that can seriously boost the speed of regular expressions. I couldn't resist running some tests, and boy, oh boy, let me tell you what I uncovered. Brace yourself for some nerdy excitement!

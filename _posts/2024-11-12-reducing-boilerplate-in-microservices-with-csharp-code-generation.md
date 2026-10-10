@@ -1,9 +1,14 @@
 ---
-tags: ["csharp", "generators", "rant"]
-categories: ["csharp", "generators"]
-title: "Reducing Boilerplate in Microservices with C# Code Generation"
+tags:
+- csharp
+- generators
+- rant
+categories:
+- csharp
+- generators
+title: Reducing Boilerplate in Microservices with C# Code Generation
 image:
-  path: /assets/img/2024-11-12/code-generation.jpg
+  path: /assets/img/2024-11-12/main.jpg
   alt: This is exactly how we generate code!
 ---
 

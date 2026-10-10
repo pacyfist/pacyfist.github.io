@@ -1,9 +1,15 @@
 ---
-tags: ["typescript", "angular", "components", "signals"]
-categories: ["typescript", "angular"]
-title: "Demystifying Angular Component Inputs: From Old School to Signal Power"
+tags:
+- typescript
+- angular
+- components
+- signals
+categories:
+- typescript
+- angular
+title: 'Demystifying Angular Component Inputs: From Old School to Signal Power'
 image:
-  path: /assets/img/2025-02-06/angular-signals.jpg
+  path: /assets/img/2025-02-06/main.jpg
   alt: Cartoon interpretation of Angular signals.
 ---
 
