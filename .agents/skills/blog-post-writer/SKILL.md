@@ -227,24 +227,26 @@ The rest of the prompt describes the scene and never touches the size again.
 **Every prompt file ends with this block, copied character for character:**
 
 ```text
-Style: hand-painted watercolor on white structural paper, the rough cold-press tooth and paper fibers visible through every wash. Transparent layered washes with soft blooms, granulating pigment, and a few dry-brush edges, bare white paper left for the highlights. Straight-on eye-level camera, shallow depth so the scene reads as a flat painted page and not a deep 3D world. Even soft daylight, pale washed shadows, everything in focus. Bare white paper background with deep navy, teal, amber, and coral pigment. Friendly and slightly whimsical. No text, letters, numbers, logos, or UI labels anywhere.
+Style: warm retro-tech flat editorial illustration with subtle paper grain and stippling texture on a deep matte charcoal background. Tactile mechanical hardware anchored at the bottom edge in clean flat 2D frontal elevation with floating minimalist flat UI panels above. Muted vintage palette of burnt terracotta orange, mustard ochre, sage green, and desaturated slate teal. Soft luminous amber and cyan ambient glow along clean flat circuit lines with subtle diffuse shadows. Completely flat 2D layout, orthogonal alignment, straight 90-degree bus traces, clean balanced composition, matte textured surfaces. Zero 3D depth, no isometric tilt, no photorealism, no glossy plastic, no text, letters, numbers, words, labels, or logos anywhere.
 ```
 
 Do not reword it and do not describe the rendering style anywhere else in the prompt -
 the scene paragraphs say what is in the picture, this block says what it looks like.
 
-The fussy-sounding parts are the ones doing the work. "Straight-on eye-level camera"
-and "everything in focus" kill the two variables that make consecutive headers look
-unrelated: dutch angles and depth-of-field blur. "Deep navy, teal, amber, and coral" is
-the palette the blog already drifted into on its own, so it is the thread tying new
-headers to the older ones. Naming the paper twice - "white structural paper" and "bare
-white paper background" - is what stops the generator from filling the empty areas with
-a painted sky or a colour wash; the background is supposed to be the paper itself. And
-watercolor does not produce legible letterforms, which is why the older photoreal header
-ended up full of readable text and the painted ones do not.
+This style is specifically crafted to harmonize with Chirpy's light and dark themes:
+- In **dark mode**, the matte charcoal background and soft ambient glows blend seamlessly into the `#1b1b1e` background without harsh white glare.
+- In **light mode**, the grounded dark charcoal base, warm earthy tones (terracotta, mustard, sage), and luminous accents provide a striking, cozy editorial contrast against the clean white layout.
+- "Completely flat 2D layout, orthogonal alignment" ensures a clean, graphic web poster look: hardware grounded at the bottom edge, 90-degree traces routing upward into flat floating UI cards above, with zero awkward 3D perspective distortion or isometric angle skewing.
+- "Burnt terracotta, mustard ochre, sage green, and desaturated slate teal on matte charcoal" creates a rich, timeless signature palette for the blog.
+- The strict prohibition on text, numbers, words, labels, and logos keeps the imagery clean and free of AI hallucination artifacts.
 
-Write the scene in painted terms too - a "key in loose amber washes", not a "golden key"
-- so the scene description is not arguing with the style block.
+Write the scene using tactile hardware and clean UI metaphors:
+- **Perspective**: Always specify straight-on frontal elevation, flat cross-section, or orthogonal layout. Avoid isometric, perspective angles, or deep 3D environments.
+- **Data structures & storage**: Slotted sorting trays, modular keycaps, mechanical switches, neatly organized memory banks, stacked cartridges, or color-coded panels.
+- **Architecture & interfaces**: Interconnected floating flat window frames, modular chassis, bus lines, braided patch cables, fiber-optic energy conduits.
+- **Optimization & refactoring**: Streamlined routing paths, precision switches, focused luminous beams, tidy modular layouts.
+- **Security & keys**: Distinct illuminated keycaps, mechanical latch switches, hardware tokens, interlocking lock switches.
+- **Shortcuts & actions**: Glowing 90-degree fiber-optic paths or particle arcs leaping from specific physical keys/switches into floating abstract window panes.
 
 ### What never goes in the image
 
@@ -255,14 +257,12 @@ idea. Two headers in a row picked one up without being asked; in both, the robot
 be deleted without losing anything the picture was saying.
 
 The same goes for the rest of the visual clip art of "tech": glowing brains, falling
-green characters, circuit-board traces used as decoration, hooded figures at keyboards,
-lightbulbs for ideas, and floating holographic interfaces.
+green characters, hooded figures at keyboards, lightbulbs for ideas, and generic sci-fi tropes.
 
 **Illustrate the specific thing the post is about**, using the objects the post already
-talks about - the corridor, the key, the coins, the drive, the keyboard. If a figure is
-in the scene, it should be doing the thing the post describes. When a scene needs an
-outside force, prefer an anonymous one (a hand reaching in from the edge) over inventing
-a character to personify it.
+talks about - keyboards, drives, cable interconnects, modular panels, minimal window frames.
+When a scene needs an outside force, prefer an anonymous one (a hand reaching in from the edge)
+over inventing a character to personify it.
 
 A character is fine when the post has one: a person hitting the actual problem. What is
 not fine is a mascot standing in for the concept because the concept was hard to draw.

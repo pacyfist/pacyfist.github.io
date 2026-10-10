@@ -34,28 +34,26 @@ say which you did.**
 
 pacyfist.dev — Filip Franik. Jekyll + Chirpy.
 
-**Core stack (highest credibility, best fit):**
+Filip is a pragmatic, hands-on developer running an Arch Linux (Omarchy / Hyprland) workstation. He works heavily with C# and TypeScript, but blogs across a wide, curious developer workbench.
 
-- C# / .NET / ASP.NET Core / Entity Framework Core
-- TypeScript / Angular
-- SQL Server
+**Topic Pillars (all first-class fit):**
 
-**Secondary, growing:**
-
-- AI coding agents and tooling
-- Linux desktop / Omarchy / Hyprland, hardware and filesystem recovery
-- Occasional Node.js + Three.js side quests
+1. **.NET, C# & Data Architecture:** C#, .NET runtime, ASP.NET Core, EF Core, SQL Server, performance/benchmarking, caching (HybridCache), database internals/indexing, modern APIs (OpenAPI, Scalar, gRPC).
+2. **Frontend & Modern Web:** TypeScript, Angular (Signals, modern reactive state), modern styling & UI (Tailwind CSS, DaisyUI), frontend tooling (Vite, Vitest, Bun/Node), browser platform APIs.
+3. **AI Tooling & Agentic Workflows:** Practical AI dev tooling, AI coding agents and CLI runners (Antigravity, Codex, Claude Code, Cursor), Model Context Protocol (MCP) servers and tool design, local LLMs (Ollama), embeddings, text-to-SQL, real developer agent workflows.
+4. **Linux, Systems & Developer Ergonomics:** Arch Linux / Omarchy, Hyprland / Wayland, shell & terminal ergonomics (tmux, Neovim, zsh, starship, CLI utilities), hardware/disk/filesystem rescue and recovery (ddrescue, ntfs, btrfs), developer workstation efficiency.
+5. **Game Development & Graphics:** Flax Engine (C#/C++ game engine), Three.js / WebGL / WebGPU, shader development, 3D graphics on web or native.
+6. **DevOps, Containers & Dev Environments:** Docker, CI/CD, local dev setups, self-hosting, developer networking and containerization.
+7. **Wildcard & Hands-On Curiosity ("Anything Interesting"):** Technical rabbit holes, unusual debugging adventures, hardware/firmware tinkering, reverse-engineering, after-hours experiments that yield a real story and a reproducible lesson.
 
 **Voice:** hands-on, after-hours side project, step-by-step. Posts open with a
 personal story about hitting the problem for real. Read `_posts/` at the start of
 every run rather than trusting this list — the catalog moves.
 
-**Search engines that matter:** Google _and_ Bing. Bing over-indexes
-Microsoft-stack and Microsoft-docs-adjacent queries, so a .NET/C#/SQL Server
-topic gets meaningfully more Bing traffic than an equivalent-demand topic in
-another ecosystem. That's a real thumb on the scale for the core stack — and
-`suggest.py` returns both engines separately so you can see it rather than
-assume it.
+**Search engines that matter:** Google _and_ Bing.
+- **Google** is the global baseline for all developer queries (Linux, AI tooling, web, game dev, DevOps, languages).
+- **Bing** over-indexes Microsoft-stack and Microsoft-docs-adjacent queries, so a .NET/C#/SQL Server topic gets an extra Bing traffic boost.
+- `suggest.py` returns both engines separately so you can see where demand lives.
 
 ## Step 1 — Read the catalog
 
@@ -79,23 +77,24 @@ such topics however good the demand looks — and say in the writeup that you di
 
 ## Step 2 — Generate candidates
 
-Aim for 8-12 raw candidates before filtering to the shortlist. Look where demand
+Aim for **12-16 raw candidates** before filtering to the shortlist. Actively sample
+across at least 3-4 distinct pillars so the raw pool is diverse. Look where demand
 is _about to_ arrive as well as where it already is:
 
-- **Release calendars 1-4 months before GA.** Search volume for a major version
-  ramps through the preview period, spikes at GA, and stays elevated for a year.
-  Publishing during preview means being indexed and aged before the spike rather
-  than fighting the vendor's own docs on release day. Check the .NET blog
-  previews, C# language feature status, EF Core "what's new", Angular releases,
-  SQL Server release notes.
+- **Release calendars & previews (1-4 months before GA):**
+  - *.NET / C# / DB:* .NET previews, C# language feature status, EF Core "what's new", SQL Server release notes.
+  - *Frontend / Web:* Angular releases, TypeScript upcoming features, Vite/Vitest major updates, Tailwind/CSS standards.
+  - *AI / Agents:* MCP specification additions, agent SDK updates (Antigravity, Claude Code, Cursor), local inference engines (Ollama, llama.cpp).
+  - *Linux / Workstation:* Linux kernel / systemd updates, Hyprland / Wayland releases, Omarchy/Arch package changes.
+  - *Game Dev:* Flax Engine releases, Three.js releases.
 - **Recently-shipped features still marked experimental or preview** — thin docs
   by definition, which is where the gap lives.
-- **Breaking changes and upgrade pain.** "X broke when I upgraded to Y" is
-  durable and high-intent. Error strings are the easiest queries for a small blog
-  to rank for, because vendor docs rarely target them directly.
-- **Developer-side spikes:** Hacker News top-of-week, r/dotnet, r/Angular2,
-  Stack Overflow trending tags, and the GitHub issue tracker of any fast-moving
-  project Filip uses. A flood of "this broke after the update" issues is demand
+- **Breaking changes and upgrade pain.** "X broke when I upgraded to Y", missing flags,
+  migration paths (e.g. Karma to Vitest, OpenAPI Swashbuckle to Microsoft OpenAPI).
+  Error strings are the easiest queries for a small blog to rank for, because vendor docs rarely target them directly.
+- **Developer-side spikes:** Hacker News top-of-week, r/dotnet, r/Angular2, r/linux,
+  r/unixporn, r/LocalLLaMA, r/gamedev, Stack Overflow trending tags, and GitHub issues
+  of fast-moving tools. A flood of "this broke after the update" issues is demand
   arriving before anyone has written the answer.
 
 ## Step 3 — Measure demand
@@ -103,7 +102,7 @@ is _about to_ arrive as well as where it already is:
 Run the bundled script on your candidates:
 
 ```bash
-python3 .claude/skills/blog-topic-research/scripts/suggest.py "candidate term" "another"
+python3 .agents/skills/blog-topic-research/scripts/suggest.py "candidate term" "another"
 ```
 
 Add `--deep` on the two or three most promising to expand with a-z and question
@@ -164,7 +163,7 @@ Four axes, 1-5. Scores sort the list; the notes carry the information.
 | ---------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | **Demand** | Full autocomplete tree on both engines, plus a release or breakage event driving it | Nothing on either engine at any phrasing                 |
 | **Gap**    | Top results are stale, wrong, or thin                                               | Vendor docs plus strong ecosystem blogs own it           |
-| **Fit**    | Core stack, sequel to an existing post, Filip can run it tonight                    | Outside the stack, or can't be reproduced on his machine |
+| **Fit**    | High hands-on credibility; Filip can run and lab-test it on his workstation tonight | Cannot be reproduced locally on Filip's machine          |
 | **Angle**  | A specific, non-obvious claim only this post makes                                  | "Here's what's new in X", same as everyone else          |
 
 Ground Demand in the `suggest.py` output wherever you have it, and say so. Where
@@ -177,6 +176,9 @@ blog's voice.
 Note the **Bing bonus** explicitly rather than hiding it in a score — say which
 candidates get a second search engine working for them.
 
+**Shortlist Diversity Requirement:**
+Unless Filip explicitly asks for a narrow topic focus (e.g. "give me .NET ideas"), the final 5-8 candidate shortlist **must include topics from at least 2-3 different pillars**. Avoid single-stack monoculture where all candidates belong to just .NET or just Angular.
+
 **A shortlist entry may be "refresh an existing post" rather than a new one.**
 If Step 1 found a post already ranking for a newer version's query, updating it
 in place keeps the URL and its accumulated authority, usually costs a fraction of
@@ -186,19 +188,20 @@ low Angle and near-zero cost is often a better trade than the totals suggest.
 
 ## Step 6 — Deliver
 
-Lead with the ranked table, then expand:
+Lead with the ranked table, including the Pillar column so variety is legible at a glance:
 
 ```markdown
 ## Shortlist
 
-| #   | Topic | Demand | Gap | Fit | Angle | Total | Note                     |
-| --- | ----- | ------ | --- | --- | ----- | ----- | ------------------------ |
-| 1   | ...   | 5      | 5   | 4   | 4     | 18    | one line on why it's top |
+| #   | Topic | Pillar | Demand | Gap | Fit | Angle | Total | Note                     |
+| --- | ----- | ------ | ------ | --- | --- | ----- | ----- | ------------------------ |
+| 1   | ...   | ...    | 5      | 5   | 5   | 4     | 19    | one line on why it's top |
 
 ## The top three, expanded
 
 ### 1. [Topic]
 
+**Pillar:** [Topic Pillar]
 **Why now:** timing and release-curve reasoning, with dates.
 **Demand evidence:** the actual suggestion strings, per engine.
 **What's ranking, and why it loses:** who's on page one and what's wrong with it.
@@ -222,15 +225,19 @@ Close by asking which one to take to `blog-post-writer`.
 
 ## Traps
 
-- **Don't grade on interestingness.** A topic being cool is not demand. Every
+- **Don't grade on interestingness alone.** A topic being cool is not demand. Every
   ranking must survive "would someone type this into a search box while stuck?"
+- **Don't fall into single-stack tunnel vision.** Do not present a shortlist where every
+  single item is from the same technology stack unless requested. A strong shortlist offers
+  Filip diverse directions for his next post.
+- **Avoid generic AI hype, embrace concrete developer tooling.** Do not propose speculative
+  "How AI will change coding" thinkpieces. Propose concrete, reproducible developer workbench
+  topics: custom MCP servers, agentic terminal workflows, local Ollama embedding pipelines,
+  or hands-on agent benchmarking.
 - **Don't propose what you can't verify.** If research turns up nothing concrete
   about a candidate's current state, drop it rather than hedging in the writeup.
 - **Don't inflate every score.** A shortlist that's all 4s and 5s is useless for
   choosing. Real candidates have real weaknesses; name them.
-- **Don't let the AI-topic gravity well win.** Agentic coding is genuinely
-  relevant here, but it's also the most content-farmed subject on the internet.
-  Propose it only with a specific, verifiable angle.
 - **Don't skip `suggest.py` because the topic seems obviously popular.** The
   cases where it changes your mind — a beloved technology with no search
   footprint, or a boring one with a huge tree — are exactly the cases where your
