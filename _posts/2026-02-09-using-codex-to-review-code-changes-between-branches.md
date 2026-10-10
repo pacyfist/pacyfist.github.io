@@ -1,10 +1,13 @@
 ---
-tags: ["codex", "git", "code review", "cli"]
-categories: ["tooling", "git"]
-title: "Using Codex to Review Code Changes Between Branches (Feature vs. Main)"
-image:
-  path: /assets/img/2026-02-09/main.jpg
-  alt: All your code are belong to us!
+tags:
+- codex
+- git
+- code review
+- cli
+categories:
+- tooling
+- git
+title: Using Codex to Review Code Changes Between Branches (Feature vs. Main)
 ---
 
 I love code review. I also love _finishing_ code review. And if you’ve ever stared at a PR thinking “surely I’m missing something obvious”, you already know the real problem: our brains are not great at diff-scrolling for an hour straight.

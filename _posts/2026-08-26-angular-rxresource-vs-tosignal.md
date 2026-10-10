@@ -1,10 +1,14 @@
 ---
-tags: ["typescript", "angular", "signals", "rxresource", "tosignal"]
-categories: ["typescript", "angular"]
-title: "Angular rxResource vs toSignal: A Fair Test"
-image:
-  path: /assets/img/2026-08-26/main.jpg
-  alt: Two measuring tapes arguing over one HTTP request.
+tags:
+- typescript
+- angular
+- signals
+- rxresource
+- tosignal
+categories:
+- typescript
+- angular
+title: 'Angular rxResource vs toSignal: A Fair Test'
 ---
 
 The endpoint was `/api/users/bad`, and my test had a very satisfying red 500 in it.

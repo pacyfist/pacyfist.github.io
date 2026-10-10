@@ -1,10 +1,13 @@
 ---
-tags: ["sqlserver", "dotnet", "csharp", "performance"]
-categories: ["sqlserver", "dotnet"]
-title: "SQL Server UUIDv7: Why Guid.CreateVersion7 Still Fragments"
-image:
-  path: /assets/img/2026-09-27/main.jpg
-  alt: An antique clockwork filing cabinet that insists on sorting index cards from back to front.
+tags:
+- sqlserver
+- dotnet
+- csharp
+- performance
+categories:
+- sqlserver
+- dotnet
+title: 'SQL Server UUIDv7: Why Guid.CreateVersion7 Still Fragments'
 ---
 
 Back in February 2025, I wrote about [taming the UUID beast](/posts/taming-the-uuid-beast-how-to-avoid-clustered-index-fragmentation-in-sql-server/) and showed how `NEWSEQUENTIALID()` kept 1,000,000 clustered index rows under 1% fragmentation. But it always came with an annoying catch: SQL Server held the keys, and your C# application had to wait for a database roundtrip just to learn a new entity's ID.

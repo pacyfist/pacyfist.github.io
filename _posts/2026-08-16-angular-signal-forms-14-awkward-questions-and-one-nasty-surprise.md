@@ -1,10 +1,14 @@
 ---
-tags: ["typescript", "angular", "signal forms", "validation", "forms"]
-categories: ["typescript", "angular"]
-title: "Angular Signal Forms: 14 Awkward Questions and One Nasty Surprise"
-image:
-  path: /assets/img/2026-08-16/main.jpg
-  alt: A form that finally validates itself, and one sneaky button.
+tags:
+- typescript
+- angular
+- signal forms
+- validation
+- forms
+categories:
+- typescript
+- angular
+title: 'Angular Signal Forms: 14 Awkward Questions and One Nasty Surprise'
 ---
 
 I have typed `this.fb.group({ ... })` so many times that my fingers do it before my brain catches up. Saturday night they did it again, for the signup page of a weekend project that currently has exactly one user: me.

@@ -1,10 +1,14 @@
 ---
-tags: ["linux", "ntfs", "troubleshooting", "ntfsfix", "systemd"]
-categories: ["linux", "troubleshooting"]
-title: "When the Power Dies: Rescuing an NTFS Drive on Linux"
-image:
-  path: /assets/img/2026-07-01/main.jpg
-  alt: A hard drive being pulled back from the brink.
+tags:
+- linux
+- ntfs
+- troubleshooting
+- ntfsfix
+- systemd
+categories:
+- linux
+- troubleshooting
+title: 'When the Power Dies: Rescuing an NTFS Drive on Linux'
 ---
 
 Hey everyone, your friendly neighborhood developer _is_ back-and this time with a small horror story that had a happy ending.

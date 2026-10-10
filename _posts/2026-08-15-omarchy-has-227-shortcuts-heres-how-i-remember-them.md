@@ -1,10 +1,14 @@
 ---
-tags: ["omarchy", "hyprland", "keybindings", "linux", "cheatsheet"]
-categories: ["linux", "desktop"]
-title: "Omarchy Has 227 Shortcuts: Here's How I Remember Them"
-image:
-  path: /assets/img/2026-08-15/main.jpg
-  alt: One key to rule them all, and in the darkness bind them.
+tags:
+- omarchy
+- hyprland
+- keybindings
+- linux
+- cheatsheet
+categories:
+- linux
+- desktop
+title: 'Omarchy Has 227 Shortcuts: Here''s How I Remember Them'
 ---
 
 Last week I had a browser open on the wrong monitor and couldn't remember the shortcut to throw it across. I pressed `SUPER + K`, got a wall of keybindings, and by the time I found the right line I'd forgotten why I wanted it.

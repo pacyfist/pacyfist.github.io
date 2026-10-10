@@ -1,10 +1,14 @@
 ---
-tags: ["typescript", "angular", "tailwind", "daisyui", "tooling"]
-categories: ["typescript", "angular"]
-title: "Angular 22 + Tailwind 4 + daisyUI Setup: Two Commands"
-image:
-  path: /assets/img/2026-08-17/main.jpg
-  alt: A toolbox where every single tool is already the right one for the job.
+tags:
+- typescript
+- angular
+- tailwind
+- daisyui
+- tooling
+categories:
+- typescript
+- angular
+title: 'Angular 22 + Tailwind 4 + daisyUI Setup: Two Commands'
 ---
 
 Setting up Tailwind in an Angular project used to be a small ritual. Install three packages, hand-write a PostCSS config, guess the right filename, edit the global stylesheet, then find out something in that list changed two versions ago.
