@@ -8,6 +8,10 @@ categories:
 - typescript
 - angular
 title: 'Angular 19, Tailwind 4, and SCSS: A Modern, Step-by-Step Setup Guide'
+image:
+  path: /assets/img/2025-02-09/main.jpg
+  alt: Three interlocking modular components on a base plate powering styled preview
+    cards.
 ---
 
 > **Heads up: this guide targets Angular 19.** Since Angular 21 the CLI does the setup for you - `ng new --style tailwind` replaces most of the steps below. If you are starting a new project, read [Angular 22 + Tailwind 4 + daisyUI Setup: Two Commands](https://www.pacyfist.dev/posts/angular-22-tailwind-4-daisyui-setup/) instead.

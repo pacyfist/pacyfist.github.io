@@ -9,6 +9,9 @@ categories:
 - linux
 - desktop
 title: 'Omarchy Has 227 Shortcuts: Here''s How I Remember Them'
+image:
+  path: /assets/img/2026-08-15/main.jpg
+  alt: A mechanical keyboard routing glowing shortcut paths to floating window panes.
 ---
 
 Last week I had a browser open on the wrong monitor and couldn't remember the shortcut to throw it across. I pressed `SUPER + K`, got a wall of keybindings, and by the time I found the right line I'd forgotten why I wanted it.

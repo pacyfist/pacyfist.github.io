@@ -9,6 +9,9 @@ categories:
 - typescript
 - angular
 title: 'Angular Karma to Vitest Migration: The Missing Import'
+image:
+  path: /assets/img/2026-08-18/main.jpg
+  alt: A test bench upgrading an antique clockwork rig to a solid-state test cartridge.
 ---
 
 Angular ships an official migration that moves your unit tests from Karma to Vitest. So you upgrade to Angular 22, run it, and you are done. Right?

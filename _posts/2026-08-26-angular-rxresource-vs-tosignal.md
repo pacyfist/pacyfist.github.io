@@ -9,6 +9,9 @@ categories:
 - typescript
 - angular
 title: 'Angular rxResource vs toSignal: A Fair Test'
+image:
+  path: /assets/img/2026-08-26/main.jpg
+  alt: A dual-channel benchmarking apparatus measuring async data pulses side by side.
 ---
 
 The endpoint was `/api/users/bad`, and my test had a very satisfying red 500 in it.

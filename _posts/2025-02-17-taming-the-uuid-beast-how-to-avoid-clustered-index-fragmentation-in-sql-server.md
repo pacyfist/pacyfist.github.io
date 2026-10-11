@@ -7,6 +7,10 @@ categories:
 - sqlserver
 - tsql
 title: 'Taming the UUID Beast: How to Avoid Clustered Index Fragmentation in SQL Server'
+image:
+  path: /assets/img/2025-02-17/main.jpg
+  alt: A dual-sided mechanical sorting rack contrasting fragmented trays with sequential
+    slots.
 ---
 
 Hey everyone, your friendly neighborhood developer *is* back with another deep dive! Today, we're going to wrestle with a common performance killer: **index fragmentation**, specifically when using `UNIQUEIDENTIFIER` (UUID) as your clustered index.

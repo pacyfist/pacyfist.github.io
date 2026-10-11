@@ -8,6 +8,9 @@ categories:
 - dotnet
 - architecture
 title: 'ASP.NET Core OpenAPI Migration: Ditching Swashbuckle'
+image:
+  path: /assets/img/2026-09-29/main.jpg
+  alt: A modular API documentation console projecting endpoint specification cards.
 ---
 
 I have a confession to make. When I upgraded my first Web API project to .NET 9 and loaded `localhost:5001/swagger` in Chrome, I spent twenty minutes checking my reverse proxy config because the browser returned a blank 404.

@@ -9,6 +9,9 @@ categories:
 - linux
 - troubleshooting
 title: 'When the Power Dies: Rescuing an NTFS Drive on Linux'
+image:
+  path: /assets/img/2026-07-01/main.jpg
+  alt: A diagnostic recovery dock reconnecting sector data paths on an external drive.
 ---
 
 Hey everyone, your friendly neighborhood developer _is_ back-and this time with a small horror story that had a happy ending.

@@ -9,6 +9,9 @@ categories:
 - typescript
 - angular
 title: 'Angular Signal Forms: 14 Awkward Questions and One Nasty Surprise'
+image:
+  path: /assets/img/2026-08-16/main.jpg
+  alt: A tactile form control console with validation sliders and a surprise latch.
 ---
 
 I have typed `this.fb.group({ ... })` so many times that my fingers do it before my brain catches up. Saturday night they did it again, for the signup page of a weekend project that currently has exactly one user: me.

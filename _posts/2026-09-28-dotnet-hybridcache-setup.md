@@ -8,6 +8,10 @@ categories:
 - dotnet
 - architecture
 title: '.NET HybridCache Setup: The Multi-Pod Stampede Trap'
+image:
+  path: /assets/img/2026-09-28/main.jpg
+  alt: A two-tier hardware cache console locking out concurrent requests to avoid
+    stampedes.
 ---
 
 I love distributed caching. I also love when my SQL Server container does not spike to 100% CPU on a Monday morning because fifty parallel requests hit an expired key at 09:14:02.
